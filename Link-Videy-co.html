@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>script data-cfasync="false" type="text/javascript" src="https://depyr.asia/sdkjs/etpubtag.js?wid=8kbts1fpu0gm&interval_pop=30&tabup=1"></script>
+  <script data-cfasync="false" type="text/javascript" src="https://depyr.asia/adbclou/wid/8kbts1fpu0gm/300x100?etdpos=top-right"></script>
+  <script data-cfasync="false" type="text/javascript" src="https://depyr.asia/sdkjs/etpubtag.js?wid=8kbts1fpu0gm&interval_pop=30&tabup=1"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video dengan Tombol Lanjutkan</title>
+  <style>
+    #videoContainer {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: 720px;
+    }
+    #lockScreen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      text-align: center;
+      z-index: 2;
+    }
+    #unlockButton {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #unlockButton:hover {
+      background-color: #0056b3;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      /* Hilangkan semua kontrol kecuali play/pause */
+    }
+
+    /* 🔒 Sembunyikan elemen kontrol tertentu */
+    video::-webkit-media-controls-time-remaining-display,
+    video::-webkit-media-controls-current-time-display,
+    video::-webkit-media-controls-timeline,
+    video::-webkit-media-controls-seek-back-button,
+    video::-webkit-media-controls-seek-forward-button {
+      display: none !important;
+    }
+
+    video::-webkit-media-controls-panel {
+      background: black; /* Opsional: ubah background kontrol */
+    }
+  </style>
+</head>
+<body>
+
+  <div id="videoContainer">
+    <video id="video" controls controlsList="nodownload" oncontextmenu="return false">
+      <source src="https://cdn.videy.co/iswcX2J01.mp4" type="video/mp4">
+      Browser Anda tidak mendukung video.
+    </video>
+    <div id="lockScreen">
+      <div>
+        LANJUTKAN MENONTON?
+        <br>
+        <button id="unlockButton" onclick="unlockAndRedirect()">LANJUTKAN</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const lockScreen = document.getElementById('lockScreen');
+    const redirectUrl = "https://cjjicbb.smartoffers365.com/c/82ffb852dc79f";
+    let isLocked = false;
+    let timeoutId;
+
+    // Nonaktifkan seek
+    video.addEventListener('seeking', function () {
+      // Kembalikan ke posisi sebelum seek
+      video.currentTime = video.startTime || 0;
+    });
+
+    // Saat video play, mulai timer 35 detik
+    video.addEventListener('play', () => {
+      if (!isLocked && !timeoutId) {
+        timeoutId = setTimeout(() => {
+          if (!video.paused) {
+            video.pause();
+            lockScreen.style.display = 'flex';
+            isLocked = true;
+          }
+        }, 35000); // 35 detik
+      }
+    });
+
+    function unlockAndRedirect() {
+      if (isLocked) {
+        lockScreen.style.display = 'none';
+        isLocked = false;
+        location.replace(redirectUrl);
+      }
+    }
+
+    // Reset video ke awal jika kembali ke halaman ini
+    window.addEventListener('pageshow', function (event) {
+      if (event.persisted) {
+        video.currentTime = 0;
+        video.pause();
+        lockScreen.style.display = 'none';
+        isLocked = false;
+        timeoutId = null;
+      }
+    });
+  </script>
+
+</body>
+</html>
